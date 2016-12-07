@@ -2,7 +2,7 @@
   "name": "teste",
   "version": "0.1.0",
   "private": true,
-  "homepage" : "./",
+  "homepage": "./",
   "devDependencies": {
     "react-scripts": "0.7.0"
   },
@@ -11,6 +11,7 @@
     "firebase-tools": "^3.0.8",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
+    "react-infinite-scroll-component": "^2.0.1",
     "react-redux": "^4.4.5",
     "react-router": "^3.0.0",
     "react-router-redux": "^4.0.6",

@@ -1,44 +1,46 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import { getJSON } from '../utils.js';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import Comic from './Comic.jsx';
+import LoadingView from './LoadingView.jsx';
 
 class Comics  extends React.Component {
   state = {
-    comics : null,
+    comics : [],
+    hasMore : true,
   }
 
-  getJSON = (url, callback) => {
-    var xhr = new XMLHttpRequest();
-    xhr.open('get', url, true);
-    xhr.responseType = 'json';
-    console.log("loading");
-    xhr.onload = function() {
-      console.log("loaded");
-      var status = xhr.status;
-      if (status == 200) {
-        callback(null, xhr.response);
+  loadComics = () => {
+    const length = 5;
+    const { max } = this.props ? this.props : 0;
+    const page = this.state.comics.length / 5;
+    [...Array(length)].map((x, i) => {
+      const num = max - (page * length) - i;
+      if (num > 0) {
+        getJSON('http://xkcd.com/' + num + '/info.0.json', this.updateState);
       } else {
-        callback(status);
+        this.setState({
+          ...this.state,
+          hasMore : false,
+        });
       }
-    };
-    xhr.send();
+    });
+
   }
 
   updateState = (status, data = null) => {
-    console.log("updating");
-    console.log(data);
+    const { comics, hasMore } = this.state;
     this.setState({
-      comics : [ data ]
+      hasMore,
+      comics : [
+                ...comics,
+                data,
+            ]
     });
   }
 
-  updateComic = (event) => {
-    const num = Math.floor((Math.random() * 1769) + 1);
-    this.getJSON('https://crossorigin.me/http://xkcd.com/' + num + '/info.0.json', this.updateState);
-  }
-
   componentDidMount() {
-    console.log("mounting");
-    this.getJSON('https://crossorigin.me/http://xkcd.com/info.0.json', this.updateState);
+    this.loadComics();
   }
 
 	mapComics = (comic) => {
@@ -46,13 +48,18 @@ class Comics  extends React.Component {
 	}
 
 	render() {
-		const { comics } = this.state;
+		const { comics, hasMore } = this.state;
     if (comics === null) {
       return <div />;
     }
 		const container = comics.map(this.mapComics, this);
 		return (
-			<div onClick={this.updateComic}>{container}</div>
+      <InfiniteScroll
+        next={this.loadComics}
+        hasMore={hasMore}
+        loader={<LoadingView />}>
+          {container}
+      </InfiniteScroll>
 		);
 	}
 }

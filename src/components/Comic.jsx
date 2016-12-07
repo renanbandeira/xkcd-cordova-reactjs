@@ -1,10 +1,10 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 class Comic  extends React.Component {
   render() {
     console.log(this.props);
-    const {comic : {img} }  = this.props;
-    return <img src={img} style={{ width: '100%' }} />;
+    const {comic : {img, alt} }  = this.props;
+    return <img src={img} alt={alt} style={{ width: '100%' }} />;
   }
 }
 

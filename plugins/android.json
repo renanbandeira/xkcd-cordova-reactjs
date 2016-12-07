@@ -9,6 +9,12 @@
     "installed_plugins": {
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.greenmile.renanbandeira.cordova"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.greenmile.renanbandeira.cordova"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.greenmile.renanbandeira.cordova"
         }
     },
     "dependent_plugins": {}
